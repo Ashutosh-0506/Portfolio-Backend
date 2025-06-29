@@ -261,7 +261,7 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
 
-  await user.save({ validateBeforeSave: false });  // ✅ bypasses required fields check
+  await user.save();
 
   generateToken(user, "Reset Password Successfully!", 200, res);
 });
