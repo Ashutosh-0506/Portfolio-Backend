@@ -10,7 +10,8 @@ export const generateToken = (user, message, statusCode, res) => {
       expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      secure: true,         
+      sameSite: "None",     
     })
     .json({
       success: true,
