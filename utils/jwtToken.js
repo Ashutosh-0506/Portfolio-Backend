@@ -1,12 +1,16 @@
 export const generateToken = (user, message, statusCode, res) => {
   const token = user.generateJsonWebToken();
+
+  // Parse cookie expire days from string like "7d"
+  const days = parseInt(process.env.COOKIE_EXPIRE.replace("d", ""));
+
   res
     .status(statusCode)
     .cookie("token", token, {
-      expires: new Date(
-        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-      ),
+      expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
     })
     .json({
       success: true,
@@ -15,4 +19,3 @@ export const generateToken = (user, message, statusCode, res) => {
       token,
     });
 };
-
